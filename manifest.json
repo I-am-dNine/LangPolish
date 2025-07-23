@@ -4,11 +4,15 @@
     "version": "1.0",
     "description": "A Chrome extension for polishing everyday English and translating Chinese into human-friendly English.",
     "action": {
-      "default_popup": "popup.html",
-      "default_icon": {
-        "128": "icons/icon128.png"
-      }
+        "default_popup": "popup.html",
+        "default_icon": {
+            "128": "icons/icon128.png"
+        }
     },
-    "permissions": []
-  }
-  
+    "permissions": [
+        "storage"
+    ],
+    "host_permissions": [
+        "https://generativelanguage.googleapis.com/*"
+    ]
+}

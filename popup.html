@@ -4,16 +4,24 @@
   <meta charset="UTF-8">
   <title>LangPolish</title>
   <style>
-    body { font-family: sans-serif; padding: 10px; width: 300px; }
-    textarea { width: 100%; height: 80px; }
+    body { font-family: sans-serif; padding: 10px; width: 320px; }
+    textarea, input { width: 100%; margin-top: 8px; }
     button { margin-top: 10px; width: 100%; }
     #result { margin-top: 10px; white-space: pre-wrap; }
+    label { font-weight: bold; }
   </style>
 </head>
 <body>
   <h3>LangPolish 日常对话翻譯助手</h3>
+
+  <label>API Key</label>
+  <input type="password" id="apiKey" placeholder="輸入你的 Gemini API Key">
+  <button id="saveKey">儲存 API Key</button>
+
+  <label>輸入句子</label>
   <textarea id="input" placeholder="輸入中文或英文..."></textarea>
-  <button id="translateBtn">Translate</button>
+  <button id="translateBtn">翻譯</button>
+
   <div id="result"></div>
 
   <script src="popup.js"></script>
