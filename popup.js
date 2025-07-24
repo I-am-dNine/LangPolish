@@ -24,7 +24,8 @@ document.getElementById("translateBtn").addEventListener("click", async () => {
         return;
     }
 
-    resultEl.textContent = "⏳ 翻譯中...";
+    resultEl.textContent = "⏳ 翻譯中";
+    showLoadingAnimation(resultEl);
 
     chrome.storage.local.get("geminiApiKey", async (data) => {
         const apiKey = data.geminiApiKey;
@@ -49,8 +50,23 @@ document.getElementById("translateBtn").addEventListener("click", async () => {
             const data = await response.json();
             const content = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
+            stopLoadingAnimation();
             resultEl.textContent = content || "⚠️ 無法取得翻譯結果";
+
+            // 如果成功，显示复制按钮
+            if (content) {
+                const copyBtn = document.getElementById("copyBtn");
+                copyBtn.style.display = "block";
+                copyBtn.onclick = () => {
+                navigator.clipboard.writeText(content).then(() => {
+                    copyBtn.textContent = "✅ 已複製！";
+                    setTimeout(() => copyBtn.textContent = "📋 複製翻譯結果", 1500);
+                });
+                };
+            }
         } catch (err) {
+            stopLoadingAnimation();
+            document.getElementById("copyBtn").style.display = "none";
             console.error(err);
             resultEl.textContent = "❌ 發生錯誤，請檢查網路或 API Key。";
         }
@@ -59,4 +75,19 @@ document.getElementById("translateBtn").addEventListener("click", async () => {
 
 function isChinese(text) {
     return /[\u4e00-\u9fa5]/.test(text);
+}
+
+//  loading 动画函数（点点动起来）
+let loadingInterval = null;
+
+function showLoadingAnimation(el) {
+  let dots = 0;
+  loadingInterval = setInterval(() => {
+    dots = (dots + 1) % 4;
+    el.textContent = "⏳ 翻譯中" + ".".repeat(dots);
+  }, 400);
+}
+
+function stopLoadingAnimation() {
+  clearInterval(loadingInterval);
 }
